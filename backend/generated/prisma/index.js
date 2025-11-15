@@ -192,11 +192,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:GLORYGLORY@localhost:5432/vfs?schema=public"
+        "value": null
       }
     }
   },
