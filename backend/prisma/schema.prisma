@@ -32,7 +32,7 @@ model User{
 }
 model Poll{
   id Int @id @default(autoincrement())
-  title String
+  title String @unique
   description String
   options PollOption[]
   createdAt DateTime @default(now())
@@ -42,7 +42,7 @@ model Poll{
 }
 model PollOption{
   id Int @id @default(autoincrement())
-  text String
+  name String  @unique
   poll Poll @relation(fields: [pollId],references: [id])
   pollId Int
   votes Vote[]

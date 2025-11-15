@@ -3,7 +3,7 @@ import { IsInt, IsNotEmpty, IsString } from "class-validator";
 export class CreatePollOptionDto {
     @IsNotEmpty()
     @IsString()
-    text:string;
+    name:string;
     
     @IsNotEmpty()
     @IsInt()
