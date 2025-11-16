@@ -48,16 +48,18 @@ model PollOption{
   votes Vote[]
 
   @@map("poll_options")
+  @@unique([name, pollId])
 }
 model Vote{
-  id Int @id @default(autoincrement())
-  user User @relation(fields: [userId],references: [id])
+  id Int                @id @default(autoincrement())
+  user User             @relation(fields: [userId],references: [id])
   userId Int
   pollOption PollOption @relation(fields: [pollOptionId],references: [id])
   pollOptionId Int
-  votedAt DateTime @default(now())
+  votedAt DateTime      @default(now())
 
   @@map("votes")
+  @@unique([userId, pollOptionId])
 }
 model Feedback {
   id Int @id @default(autoincrement())
