@@ -5,9 +5,11 @@ import { PrismaClient } from 'generated/prisma';
 
 @Injectable()
 export class UsersService {
+  //dependency injection
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(createUserDto : CreateUserDto) {
+    //will add unique email validation later
     return this.prisma.user.create({
       data:createUserDto,
     });
