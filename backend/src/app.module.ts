@@ -7,9 +7,10 @@ import { PollsModule } from './polls/polls.module';
 import { VotesModule } from './votes/votes.module';
 import { FeedbacksModule } from './feedbacks/feedbacks.module';
 import { PollOptionsModule } from './poll-options/poll-options.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, PollsModule, VotesModule, FeedbacksModule, PollOptionsModule],
+  imports: [UsersModule, PollsModule, VotesModule, FeedbacksModule, PollOptionsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
