@@ -14,13 +14,17 @@ export class VotesService {
     });
   }
 
-  async findAll() {
-    return this.prisma.vote.findMany();
+  async findAll(userId:number) {
+    return this.prisma.vote.findMany({
+      where:{
+        userId
+      }
+    });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number,userId:number) {
     const vote = await this.prisma.vote.findUnique({
-      where: { id },
+      where: { id , userId},
     });
     if (!vote) {
       throw new NotFoundException('vote not found');
@@ -29,17 +33,17 @@ export class VotesService {
   }
 
   async update(id: number, updateVoteDto: UpdateVoteDto) {
-    await this.findOne(id);
+    await this.findOne(id,updateVoteDto.userId as number);
     return this.prisma.vote.update({
-      where: { id },
+      where: { id,userId:updateVoteDto.userId },
       data: updateVoteDto,
     });
   }
 
-  async remove(id: number) {
-    await this.findOne(id);
+  async remove(id: number,userId:number) {
+    await this.findOne(id,userId);
     return this.prisma.vote.delete({
-      where: { id },
+      where: { id ,userId},
     });
   }
 }
