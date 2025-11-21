@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaClient } from 'generated/prisma';
 import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { updateProfileDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -41,5 +46,13 @@ export class AuthService {
     }
     const token = await this.jwtService.signAsync(user);
     return { token };
+  }
+
+  async profile(userId: number) {
+    return this.usersService.findOne(userId);
+  }
+
+  async updateProfile(userId:number, updateProfileDto:updateProfileDto) {
+   return this.usersService.update(userId,updateProfileDto);
   }
 }
