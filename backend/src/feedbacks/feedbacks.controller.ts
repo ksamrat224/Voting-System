@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { FeedbacksService } from './feedbacks.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
@@ -7,6 +17,8 @@ import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 export class FeedbacksController {
   constructor(private readonly feedbacksService: FeedbacksService) {}
 
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 4, ttl: 59 * 60 * 1000 } })
   @Post()
   create(@Body() createFeedbackDto: CreateFeedbackDto) {
     return this.feedbacksService.create(createFeedbackDto);
@@ -23,7 +35,10 @@ export class FeedbacksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFeedbackDto: UpdateFeedbackDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFeedbackDto: UpdateFeedbackDto,
+  ) {
     return this.feedbacksService.update(+id, updateFeedbackDto);
   }
 
