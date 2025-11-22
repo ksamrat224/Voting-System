@@ -29,6 +29,18 @@ export class VotesService {
       throw new BadRequestException('Poll is not active');
     }
 
+    const existing = await this.prisma.vote.findUnique({
+      where: {
+        userId_pollId: {
+          userId: createVoteDto.userId,
+          pollId: createVoteDto.pollId,
+        },
+      },
+    });
+    if (existing) {
+      throw new BadRequestException('User has already voted in this poll');
+    }
+
     return this.prisma.vote.create({
       data: createVoteDto,
     });
