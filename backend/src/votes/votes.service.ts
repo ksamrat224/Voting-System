@@ -26,8 +26,9 @@ export class VotesService {
     if (!poll) {
       throw new NotFoundException('Poll not found');
     }
-    if (!poll.isActive) {
-      throw new BadRequestException('Poll is not active');
+    const currentDate = new Date();
+    if (!poll.isActive || poll.endsAt < currentDate) {
+      throw new BadRequestException('Poll is not active or must have been ended');
     }
 
     const existing = await this.prisma.vote.findUnique({
