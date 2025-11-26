@@ -12,22 +12,22 @@ export class PollsController {
   create(@Body() createPollDto: CreatePollDto) {
     return this.pollsService.create(createPollDto);
   }
-
+  @Roles('ADMIN','USER')
   @Get()
   findAll() {
     return this.pollsService.findAll();
   }
-
+  @Roles('ADMIN','USER')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.pollsService.findOne(+id);
   }
-
+  @Roles('ADMIN')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePollDto: UpdatePollDto) {
     return this.pollsService.update(+id, updatePollDto);
   }
-
+  @Roles('ADMIN')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.pollsService.remove(+id);

@@ -1,15 +1,18 @@
 //npx ts-node prisma/seed.ts
 import { PrismaClient, Role } from '../generated/prisma';
+import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
+
+  const hashedPassword = await bcrypt.hash('password', 10);
   // Seed Users
   const alice = await prisma.user.create({
     data: {
       name: 'Alice',
       mobile: '9800000001',
       email: 'alice@example.com',
-      password: 'password', 
+      password: hashedPassword, 
       role: Role.USER,
     },
   });
@@ -19,7 +22,7 @@ async function main() {
       name: 'Bob',
       mobile: '9800000002',
       email: 'bob@example.com',
-      password: 'password', 
+      password: hashedPassword,
       role: Role.ADMIN,
     },
   });
