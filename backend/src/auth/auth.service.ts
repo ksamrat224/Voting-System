@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -14,7 +14,7 @@ import { updateProfileDto } from './dto/update-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
@@ -52,7 +52,7 @@ export class AuthService {
     return this.usersService.findOne(userId);
   }
 
-  async updateProfile(userId:number, updateProfileDto:updateProfileDto) {
-   return this.usersService.update(userId,updateProfileDto);
+  async updateProfile(userId: number, updateProfileDto: updateProfileDto) {
+    return this.usersService.update(userId, updateProfileDto);
   }
 }

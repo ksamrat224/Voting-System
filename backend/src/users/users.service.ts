@@ -5,13 +5,14 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   //dependency injection
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
     let user = await this.prisma.user.findUnique({

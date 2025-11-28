@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePollOptionDto } from './dto/create-poll-option.dto';
 import { UpdatePollOptionDto } from './dto/update-poll-option.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class PollOptionsService {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createPollOptionDto: CreatePollOptionDto) {
     try {

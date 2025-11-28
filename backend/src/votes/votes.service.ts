@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class VotesService {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createVoteDto: CreateVoteDto) {
     const pollOption = await this.prisma.pollOption.findUnique({
@@ -27,7 +27,7 @@ export class VotesService {
       throw new NotFoundException('Poll not found');
     }
     const currentDate = new Date();
-    if (!poll.isActive || poll.endsAt < currentDate) {
+    if (!poll.isActive || (poll.endsAt && poll.endsAt < currentDate)) {
       throw new BadRequestException(
         'Poll is not active or must have been ended',
       );
@@ -107,7 +107,7 @@ export class VotesService {
     }
     const now = new Date();
 
-    if (poll.endsAt < now) {
+    if (poll.endsAt && poll.endsAt < now) {
     } else {
       const hasVoted = await this.hasUserVoted(userId, pollId);
       if (!hasVoted) {
