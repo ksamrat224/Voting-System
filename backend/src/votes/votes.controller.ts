@@ -50,8 +50,11 @@ export class VotesController {
   }
 
   @Get('poll/:pollId/results')
-  getPollResults(@Param('pollId', ParseIntPipe) pollId: number,@Req() req:Payload) {
-    return this.votesService.getPollResults(pollId,req.payload.id);
+  getPollResults(
+    @Param('pollId', ParseIntPipe) pollId: number,
+    @Req() req: Payload,
+  ) {
+    return this.votesService.getPollResults(pollId, req.payload.id);
   }
 
   @Get('poll/:pollId/check')
@@ -65,5 +68,4 @@ export class VotesController {
     );
     return { hasVoted };
   }
-  
 }

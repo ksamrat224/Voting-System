@@ -9,6 +9,7 @@ import { FeedbacksModule } from './feedbacks/feedbacks.module';
 import { PollOptionsModule } from './poll-options/poll-options.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
         },
       ],
     }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
