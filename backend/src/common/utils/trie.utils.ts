@@ -45,4 +45,27 @@ export class Trie {
     }
     return results;
   }
+
+  remove(word: string): boolean {
+    return this._remove(this.root, word.toLowerCase(), 0);
+  }
+
+  private _remove(node: TrieNode, word: string, depth: number): boolean {
+    if (depth === word.length) {
+      if (!node.isEndOfWord) return false;
+      node.isEndOfWord = false;
+      node.data = null;
+      return node.children.size === 0;
+    }
+    const char = word[depth];
+    const child = node.children.get(char);
+    if (!child) return false;
+    const shouldDeleteChild = this._remove(child, word, depth + 1);
+    if (shouldDeleteChild) {
+      node.children.delete(char);
+
+      return node.children.size === 0 && !node.isEndOfWord;
+    }
+    return false;
+  }
 }

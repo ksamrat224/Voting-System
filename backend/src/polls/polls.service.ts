@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  OnModuleInit,
 } from '@nestjs/common';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
@@ -11,12 +12,12 @@ import { fuzzySearch } from 'src/common/utils/fuzzy-search.utils';
 import { Trie } from 'src/common/utils/trie.utils';
 
 @Injectable()
-export class PollsService {
-  constructor(private readonly prisma: PrismaService) {
-    this.initializeTrie();
-  }
+export class PollsService implements OnModuleInit {
+  constructor(private readonly prisma: PrismaService) {}
   private pollTrie: Trie = new Trie();
-
+  async onModuleInit() {
+    await this.initializeTrie();
+  }
   private async initializeTrie() {
     const polls = await this.prisma.poll.findMany({
       select: { id: true, title: true, description: true, isActive: true },
@@ -26,9 +27,11 @@ export class PollsService {
 
   async create(createPollDto: CreatePollDto) {
     try {
-      return await this.prisma.poll.create({
+      const poll = await this.prisma.poll.create({
         data: createPollDto,
       });
+      this.pollTrie.insert(poll.title, poll);
+      return poll;
     } catch (error) {
       if (error.code === 'P2002') {
         throw new BadRequestException(
@@ -49,33 +52,30 @@ export class PollsService {
       order = 'desc',
     } = queryDto;
 
-    const where: any = {};
-    if (isActive !== undefined) {
-      where.isActive = isActive;
-    }
-
-    let polls = await this.prisma.poll.findMany({
-      where,
-      orderBy: { [sortBy]: order },
-      include: { options: true, _count: { select: { votes: true } } },
-    });
-
-    if (search) {
-      const fuzzyResults = fuzzySearch(
-        search,
-        polls,
-        (poll) => `${poll.title} ${poll.description || ''}`,
-        3,
-      );
-      polls = fuzzyResults.map((result) => result.item);
-    }
-
-    const total = polls.length;
     const skip = (page - 1) * limit;
-    const paginatedPolls = polls.slice(skip, skip + limit);
+
+    const where: any = {};
+    if (isActive !== undefined) where.isActive = isActive;
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [polls, total] = await Promise.all([
+      this.prisma.poll.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { [sortBy]: order },
+        include: { options: true, _count: { select: { votes: true } } },
+      }),
+      this.prisma.poll.count({ where }),
+    ]);
 
     return {
-      data: paginatedPolls,
+      data: polls,
       meta: {
         total,
         page,
@@ -85,18 +85,15 @@ export class PollsService {
     };
   }
 
-  async buildSearchIndex() {
-    const polls = await this.prisma.poll.findMany();
-    polls.forEach((poll) => this.pollTrie.insert(poll.title, poll));
-  }
-
-  async autocomplete(prefix: string) {
-    return this.pollTrie.search(prefix, 5);
+  async autocomplete(prefix: string): Promise<any[]> {
+    if (!prefix.trim()) return [];
+    return this.pollTrie.search(prefix, 10);
   }
 
   async findOne(id: number) {
     const poll = await this.prisma.poll.findUnique({
       where: { id },
+      include: { options: true, _count: { select: { votes: true } } },
     });
     if (!poll) {
       throw new NotFoundException('poll not found');
@@ -105,15 +102,23 @@ export class PollsService {
   }
 
   async update(id: number, updatePollDto: UpdatePollDto) {
-    await this.findOne(id);
-    return this.prisma.poll.update({
+    const oldPoll = await this.findOne(id);
+    const updatedPoll = await this.prisma.poll.update({
       where: { id },
       data: updatePollDto,
     });
+    if (oldPoll.title !== updatedPoll.title) {
+      this.pollTrie.remove(oldPoll.title);
+      this.pollTrie.insert(updatedPoll.title, updatedPoll);
+    } else {
+      this.pollTrie.insert(updatedPoll.title, updatedPoll);
+    }
+    return updatedPoll;
   }
 
   async remove(id: number) {
-    await this.findOne(id);
+    const poll = await this.findOne(id);
+    this.pollTrie.remove(poll.title);
     return this.prisma.poll.delete({
       where: { id },
     });
