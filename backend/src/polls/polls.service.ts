@@ -12,8 +12,17 @@ import { Trie } from 'src/common/utils/trie.utils';
 
 @Injectable()
 export class PollsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {
+    this.initializeTrie();
+  }
   private pollTrie: Trie = new Trie();
+
+  private async initializeTrie() {
+    const polls = await this.prisma.poll.findMany({
+      select: { id: true, title: true, description: true, isActive: true },
+    });
+    polls.forEach((poll) => this.pollTrie.insert(poll.title, poll));
+  }
 
   async create(createPollDto: CreatePollDto) {
     try {
