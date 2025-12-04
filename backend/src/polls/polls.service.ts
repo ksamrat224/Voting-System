@@ -14,6 +14,7 @@ import { Trie } from 'src/common/utils/trie.utils';
 @Injectable()
 export class PollsService implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}
+  
   private pollTrie: Trie = new Trie();
   async onModuleInit() {
     await this.initializeTrie();

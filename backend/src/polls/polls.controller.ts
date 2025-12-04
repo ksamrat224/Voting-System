@@ -15,7 +15,6 @@ import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
 import { Roles } from 'src/helpers/roles';
 import { QueryPollDto } from './dto/query-poll.dto';
-import { Public } from 'src/helpers/public';
 
 @Controller('polls')
 export class PollsController {
