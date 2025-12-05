@@ -7,10 +7,38 @@ import {
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
 import { PrismaService } from '../../prisma/prisma.service';
+import { PollsGateway } from 'src/polls/polls.gateway';
 
 @Injectable()
 export class VotesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private pollsGateway: PollsGateway,
+  ) {}
+
+  async vote(userId: number, pollOptionId: number) {
+    const pollOption = await this.prisma.pollOption.findUnique({
+      where: { id: pollOptionId },
+    });
+    if (!pollOption) throw new NotFoundException('Poll option not found');
+
+    const pollId = pollOption.pollId;
+
+    const vote = await this.prisma.vote.create({
+      data: { userId, pollOptionId, pollId },
+      include: { poll: true },
+    });
+
+    const updatedPoll = await this.prisma.poll.findUnique({
+      where: { id: pollId },
+      include: { _count: { select: { votes: true } } },
+    });
+    if (!updatedPoll) throw new NotFoundException('Poll not found');
+
+    this.pollsGateway.emitVoteUpdate(pollId, updatedPoll._count.votes);
+
+    return vote;
+  }
 
   async create(createVoteDto: CreateVoteDto) {
     const pollOption = await this.prisma.pollOption.findUnique({
