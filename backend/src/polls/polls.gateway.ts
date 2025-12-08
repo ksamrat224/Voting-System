@@ -39,7 +39,7 @@ export class PollsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.emit('stats', { online: this.connectedUsers });
   }
 
-  // Called by VoteService when someone votes
+ 
   emitVoteUpdate(pollId: number, voteCount: number) {
     this.server.emit('voteUpdate', {
       pollId,
