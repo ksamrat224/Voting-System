@@ -1,96 +1,332 @@
-🏛️ SajhaManch
+# 🏛️ SajhaManch
 
-SajhaManch is a digital public square for Nepal — a platform where people can express opinions, participate in public discussions, vote on issues, and collectively reach consensus in a decentralized and transparent way.
+> A digital public square for Nepal — where citizens express opinions, participate in discussions, vote on issues, and reach consensus in a transparent way.
 
-Unlike traditional voting systems, SajhaManch focuses on dialogue + participation + shared decision-making.
+SajhaManch focuses on **dialogue + participation + shared decision-making**, unlike traditional voting systems.
 
-🌱 Vision
+---
+
+## 🌱 Vision
 
 To create a modern civic-tech platform that empowers Nepalis to:
 
-discuss public issues openly,
+- 💬 Discuss public issues openly
+- 🗣️ Share feedback without fear
+- ✅ Vote responsibly
+- 🤝 Form collective consensus through participation
 
-share feedback without fear,
+---
 
-vote responsibly,
+## 🚀 Backend Features (Implemented)
 
-and gradually form collective consensus through participation.
+### 🔐 Authentication & Authorization
 
-🚀 Key Features
-🗳️ Public Voting
+| Feature                                  | Status |
+| ---------------------------------------- | ------ |
+| User registration with email & mobile    | ✅     |
+| Secure login with JWT tokens             | ✅     |
+| Password hashing with bcrypt             | ✅     |
+| Role-based access control (ADMIN / USER) | ✅     |
+| Profile management (view & update)       | ✅     |
+| Email verification templates             | ✅     |
 
-Create and participate in issue-based polls
+### 🗳️ Polls Management
 
-One vote per user per poll
+| Feature                                    | Status |
+| ------------------------------------------ | ------ |
+| Create polls with title & description      | ✅     |
+| Multiple poll options per poll             | ✅     |
+| Scheduled polls (start & end dates)        | ✅     |
+| Auto-activation/deactivation via cron jobs | ✅     |
+| Active/Inactive poll filtering             | ✅     |
+| Top polls endpoint                         | ✅     |
+| Trending polls endpoint                    | ✅     |
+| Pagination & query filtering               | ✅     |
+| Admin-only poll creation/update/delete     | ✅     |
 
-Transparent and secure vote storage
+### ✅ Voting System
 
-💬 Feedback & Discussion
+| Feature                                   | Status |
+| ----------------------------------------- | ------ |
+| Cast vote on poll options                 | ✅     |
+| Single vote per user per poll enforcement | ✅     |
+| Vote update capability                    | ✅     |
+| Vote deletion                             | ✅     |
+| Poll results with vote counts             | ✅     |
+| Check if user has voted on a poll         | ✅     |
 
-Submit feedback anonymously or with identity
+### 💬 Feedback System
 
-Encourage open public dialogue
+| Feature                          | Status |
+| -------------------------------- | ------ |
+| Submit feedback on polls         | ✅     |
+| Anonymous or identified feedback | ✅     |
+| Rate limiting (4 feedbacks/hour) | ✅     |
+| CRUD operations on feedbacks     | ✅     |
 
-Admin moderation and responses
+### ⚡ Real-time Features (WebSocket)
 
-👥 User Roles
+| Feature                            | Status |
+| ---------------------------------- | ------ |
+| Live vote count updates            | ✅     |
+| Real-time trending polls broadcast | ✅     |
+| Online users count tracking        | ✅     |
+| Socket.io integration              | ✅     |
 
-Public Users – vote, share feedback, and participate in discussions
+### 👥 User Management
 
-Admins – create polls, manage content, and view analytics
+| Feature                        | Status |
+| ------------------------------ | ------ |
+| User CRUD operations           | ✅     |
+| User roles (ADMIN/USER)        | ✅     |
+| User profile with vote history | ✅     |
 
-📊 Results & Insights
+### 🔧 Backend Infrastructure
 
-Visualized poll results (charts & percentages)
+| Feature                                 | Status |
+| --------------------------------------- | ------ |
+| Prisma ORM with PostgreSQL              | ✅     |
+| Database migrations                     | ✅     |
+| Request throttling                      | ✅     |
+| Scheduled tasks (cron jobs)             | ✅     |
+| Email service (Nodemailer + Handlebars) | ✅     |
+| Input validation (class-validator)      | ✅     |
+| Guards for route protection             | ✅     |
 
-Results visibility control (after poll ends / admin-only)
+---
 
-🧩 MVP Scope (Phase 1)
-✅ Authentication
+## 🎨 Frontend Features (Planned)
 
-Email-based signup & login
+### 🏠 Landing & Public Pages
 
-Role-based access control (Admin / User)
+| Feature                             | Status     |
+| ----------------------------------- | ---------- |
+| Hero section with platform overview | 📋 Planned |
+| Active polls showcase               | 📋 Planned |
+| Trending polls widget               | 📋 Planned |
+| About & Vision page                 | 📋 Planned |
 
-Secure session handling
+### 🔐 Authentication Pages
 
-🗳️ Voting System
+| Feature                               | Status     |
+| ------------------------------------- | ---------- |
+| Login page with form validation       | 📋 Planned |
+| Registration page with mobile & email | 📋 Planned |
+| Password reset flow                   | 📋 Planned |
+| Email verification page               | 📋 Planned |
 
-Active polls with title & description
+### 🗳️ Polls Interface
 
-Single-vote enforcement per user
+| Feature                             | Status     |
+| ----------------------------------- | ---------- |
+| Browse all active polls             | 📋 Planned |
+| Poll detail page with options       | 📋 Planned |
+| Real-time vote count display        | 📋 Planned |
+| Vote submission with confirmation   | 📋 Planned |
+| Poll results visualization (charts) | 📋 Planned |
+| Filter & search polls               | 📋 Planned |
 
-Server-side validation
+### 💬 Feedback Interface
 
-💬 Feedback Module
+| Feature                     | Status     |
+| --------------------------- | ---------- |
+| Feedback form on poll pages | 📋 Planned |
+| Anonymous toggle option     | 📋 Planned |
+| View feedbacks thread       | 📋 Planned |
 
-Anonymous or identified feedback
+### 👤 User Dashboard
 
-Admin dashboard for review & response
+| Feature              | Status     |
+| -------------------- | ---------- |
+| Profile management   | 📋 Planned |
+| My votes history     | 📋 Planned |
+| My feedbacks history | 📋 Planned |
 
-🛠️ Tech Stack
-Backend (Current)
+### 🛠️ Admin Dashboard
 
-NestJS
+| Feature                        | Status     |
+| ------------------------------ | ---------- |
+| Create/Edit/Delete polls       | 📋 Planned |
+| Manage poll options            | 📋 Planned |
+| View all feedbacks             | 📋 Planned |
+| User management                | 📋 Planned |
+| Analytics & insights dashboard | 📋 Planned |
+| Poll scheduling interface      | 📋 Planned |
 
-TypeScript
+### 📊 Data Visualization
 
-REST APIs
+| Feature                          | Status     |
+| -------------------------------- | ---------- |
+| Pie charts for vote distribution | 📋 Planned |
+| Bar charts for comparisons       | 📋 Planned |
+| Live vote count animations       | 📋 Planned |
+| Trending polls leaderboard       | 📋 Planned |
 
-PostgreSQL
+### ⚡ Real-time UI Features
 
-Frontend (Planned)
+| Feature                     | Status     |
+| --------------------------- | ---------- |
+| Live online users counter   | 📋 Planned |
+| Real-time vote updates      | 📋 Planned |
+| Notification toasts         | 📋 Planned |
+| Confetti on successful vote | 📋 Planned |
 
-React / Next.js
+---
 
-Tailwind CSS
+## 🛠️ Tech Stack
 
-Axios / Fetch API
+### Backend (Current)
 
-📁 Project Structure
+| Technology            | Purpose                   |
+| --------------------- | ------------------------- |
+| **NestJS**            | Backend framework         |
+| **TypeScript**        | Type-safe development     |
+| **Prisma**            | ORM & database migrations |
+| **PostgreSQL**        | Primary database          |
+| **JWT**               | Authentication tokens     |
+| **Socket.io**         | Real-time communication   |
+| **Nodemailer**        | Email service             |
+| **class-validator**   | Input validation          |
+| **@nestjs/throttler** | Rate limiting             |
+| **@nestjs/schedule**  | Cron jobs                 |
+
+### Frontend (Planned)
+
+| Technology              | Purpose                 |
+| ----------------------- | ----------------------- |
+| **Next.js / React**     | Frontend framework      |
+| **TypeScript**          | Type-safe development   |
+| **Tailwind CSS**        | Styling                 |
+| **Socket.io-client**    | Real-time updates       |
+| **Chart.js / Recharts** | Data visualization      |
+| **React Query**         | Server state management |
+| **Axios**               | HTTP client             |
+| **Framer Motion**       | Animations              |
+
+---
+
+## 📁 Project Structure
+
+```
 sajhamanch/
 ├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma       # Database schema
+│   │   ├── migrations/         # Database migrations
+│   │   └── seed.ts             # Database seeding
 │   ├── src/
-│   ├── modules/
-│   └── main.ts
-└── frontend/ (planned)
+│   │   ├── auth/               # Authentication module
+│   │   ├── users/              # User management
+│   │   ├── polls/              # Polls CRUD & WebSocket
+│   │   ├── poll-options/       # Poll options management
+│   │   ├── votes/              # Voting system
+│   │   ├── feedbacks/          # Feedback system
+│   │   ├── cron/               # Scheduled tasks
+│   │   ├── guards/             # Auth & role guards
+│   │   ├── helpers/            # Decorators & utilities
+│   │   └── main.ts             # Application entry
+│   ├── templates/              # Email templates
+│   └── package.json
+│
+└── frontend/                   # (Planned)
+    ├── src/
+    │   ├── components/         # Reusable UI components
+    │   ├── pages/              # Route pages
+    │   ├── hooks/              # Custom React hooks
+    │   ├── services/           # API service layer
+    │   ├── store/              # State management
+    │   └── utils/              # Helper functions
+    └── package.json
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL
+- npm or yarn
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+cp .env.example .env  # Configure your environment variables
+npx prisma migrate dev
+npm run start:dev
+```
+
+### Environment Variables
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/sajhamanch
+JWT_SECRET=your-secret-key
+SMTP_HOST=your-smtp-host
+SMTP_PORT=587
+SMTP_USER=your-email
+SMTP_PASSWORD=your-password
+```
+
+---
+
+## 📌 API Endpoints
+
+### Authentication
+
+| Method | Endpoint         | Description       |
+| ------ | ---------------- | ----------------- |
+| POST   | `/auth/register` | Register new user |
+| POST   | `/auth/login`    | User login        |
+| GET    | `/auth/profile`  | Get user profile  |
+| PATCH  | `/auth/profile`  | Update profile    |
+
+### Polls
+
+| Method | Endpoint          | Description         |
+| ------ | ----------------- | ------------------- |
+| GET    | `/polls`          | Get all polls       |
+| GET    | `/polls/:id`      | Get poll by ID      |
+| POST   | `/polls`          | Create poll (Admin) |
+| PATCH  | `/polls/:id`      | Update poll (Admin) |
+| DELETE | `/polls/:id`      | Delete poll (Admin) |
+| GET    | `/polls/top`      | Get top polls       |
+| GET    | `/polls/trending` | Get trending polls  |
+
+### Votes
+
+| Method | Endpoint                      | Description      |
+| ------ | ----------------------------- | ---------------- |
+| POST   | `/votes`                      | Cast a vote      |
+| GET    | `/votes`                      | Get user's votes |
+| GET    | `/votes/:id`                  | Get vote by ID   |
+| PATCH  | `/votes/:id`                  | Update vote      |
+| DELETE | `/votes/:id`                  | Delete vote      |
+| GET    | `/votes/poll/:pollId/results` | Get poll results |
+| GET    | `/votes/poll/:pollId/check`   | Check if voted   |
+
+### Feedbacks
+
+| Method | Endpoint         | Description        |
+| ------ | ---------------- | ------------------ |
+| POST   | `/feedbacks`     | Submit feedback    |
+| GET    | `/feedbacks`     | Get all feedbacks  |
+| GET    | `/feedbacks/:id` | Get feedback by ID |
+| PATCH  | `/feedbacks/:id` | Update feedback    |
+| DELETE | `/feedbacks/:id` | Delete feedback    |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+---
+
+<p align="center">
+  Made for Nepal 🇳🇵
+</p>
